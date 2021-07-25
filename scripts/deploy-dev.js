@@ -29,6 +29,18 @@ async function main () {
   await nft.mint(deployer.address, 4)
 
   console.log('NFT address:', nft.address)
+
+  console.log('\n\n----------------------- ONT TIME AIRDROPPER -----------------------\n\n')
+
+  const Dropper = await ethers.getContractFactory('OneTimeDropper')
+  const dropper = await Dropper.deploy()
+
+  const dropperTokenBalance = ethers.utils.parseEther('600000')
+  await token.connect(deployer).transfer(dropper.address, dropperTokenBalance)
+
+  await dropper.connect(deployer).start(token.address)
+
+  console.log('OneTimeDropper address:', dropper.address)
 }
 
 main()
